@@ -13,7 +13,7 @@ let shuffleOrder = () => {
     clickedOrder = [];
 
     for (let i in order) {
-        let elementColor = createcolorElement(order[i]);
+        let elementColor = createColorElement(order[i]);
         lightColor(elementColor, Number(i) + 1);
     }
 }
@@ -28,14 +28,14 @@ let lightColor = (element, number) => {
     });
 }
 
-led checkOrder = () => {
+let checkOrder = () => {
     for(let i in clickedOrder) {
         if(clickedOrder[i] != order[i]) {
-            lose();
+            gameOver();
             break;
         }
     }
-    if(clickedOrder.length === order.length) {
+    if(clickedOrder.length == order.length) {
         alert(`Pontuação: ${score}\nVocê acetou! Iniciando próximo nível!`);
         nextLevel();
     }
@@ -43,11 +43,51 @@ led checkOrder = () => {
 
 let click = (color) => {
     clickedOrder[clickedOrder.length] = color;
-    criateColorElement(color).classList.add('selected');
+    createColorElement(color).classList.add('selected');
 
     setTimeout(() => {
-        criateColorElement(color).classList.remove('selected');
-    }) 
-
-    checkOrder();
+        createColorElement(color).classList.remove('selected');
+        checkOrder();
+    },350); 
 }
+
+let createColorElement = (color) => {
+    if(color == 0) {
+        return green;
+    }else if(color == 1) {
+        return red;
+    }else if(color == 2) {
+        return yellow;
+    }else if(color == 3) {
+        return blue;
+    }
+}
+
+let nextLevel = () => {
+    score++;
+    shuffleOrder();
+}
+
+let gameOver = () => {
+    alert(`Pontuação: ${score}!\nVocê Perdeu`);
+    order = [];
+    clickedOrder = [];
+
+    playGame();
+}
+
+let playGame = () => {
+    alert('Bem vindo ao Jogo');
+    score = 0;
+
+    nextLevel();
+}
+
+green.onclick = () => click(0);
+red.onclick = () => click(1);
+yellow.onclick = () => click(2);
+blue.onclick = () => click(3);
+
+
+
+playGame();
